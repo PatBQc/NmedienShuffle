@@ -72,6 +72,10 @@
 			background-color: darkgrey;
 			cursor: pointer;
 		}
+
+		#gameAnswer{
+			background-color: #2A2C28;
+		}
 	
 	</style>
 </head>
@@ -81,6 +85,7 @@
 		<div><div id="gameRoot" /></div>
 		<div><div id="gameWon" /></div>
 		<div><div id="gameLost" /></div>
+		<div><div id="gameAnswer" /></div>
 	</div>
 
 	<form method="post" action="./nmediens" id="c2" style="visibility: hidden;">
@@ -2881,7 +2886,6 @@
 	var nmedienIndex = 0;
 	var ptsTrue = 0;
 	var ptsFalse = 0;
-
 	
 	// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 	function shuffleArray(array) {
@@ -2891,13 +2895,42 @@
 		}
 	}
 
-	function guessed(correct){
+	function loadNmediens(){
+		var webpages = document.querySelectorAll('#c3_c49_c64 > div > a');
+		var elem = document.querySelectorAll('#c3_c49_c64 > div > a > span > span');
+		var imgs = document.querySelectorAll('#c3_c49_c64 > div > a > span > img');
+		
+		document.querySelector('#gameRoot').innerHTML = '';
+
+		for(var i = 0; i < imgs.length; i++){
+			let nmedien = {
+				name: elem[i*2].innerHTML,
+				role: elem[i*2+1].innerHTML,
+				image: imgs[i].getAttribute('src'),
+				webpage: webpages[i].getAttribute('href')
+			}
+
+			nmediens.push(nmedien);
+		}
+	}
+
+	async function guessed(correct){
 		if(correct){
 			ptsTrue++;
 		}
 		else{
 			ptsFalse++;
 		}
+		
+		var webpage = nmediens[nmedienIndex].webpage;
+
+		const userAction = async () => {
+			const response = await fetch(webpage);
+			const text = await response.text(); 
+			document.querySelector('#gameAnswer').innerHTML = text;
+		};
+
+		await userAction();
 
 		nmedienIndex = nmedienIndex + 1 % nmediens.length;
 		showCurrentNmedien();
@@ -2970,20 +3003,7 @@
 		document.querySelector('#gameRoot').innerHTML = content;
 	}
 
-	var elem = document.querySelectorAll('#c3_c49_c64 > div > a > span > span');
-	var imgs = document.querySelectorAll('#c3_c49_c64 > div > a > span > img');
-	
-	document.querySelector('#gameRoot').innerHTML = '';
-
-	for(var i = 0; i < imgs.length; i++)	{
-		let nmedien ={
-			name: elem[i*2].innerHTML,
-			role: elem[i*2+1].innerHTML,
-			image: imgs[i].getAttribute('src')
-		}
-
-		nmediens.push(nmedien);
-	}
+	loadNmediens();
 
 	shuffleArray(nmediens);
 
