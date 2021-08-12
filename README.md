@@ -8,3 +8,4 @@ Idées suggérés à ce jour
 * Ajouter les choix "Aucune de ces réponses"
 * Créer un mode "avancé" pour les questions dans la bio (Ville d'origine, citations, ...)
 * Supporter le mobile / expérience responsives
+* Mettre un beau petit nom de domaine
