@@ -1,14 +1,75 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr-CA" xml:lang="fr-CA" class="transitions">
 
 <head>
+	<style>
+		#game{
+			width: 800px;
+			margin: auto;
+		}
+
+		#gameWon{
+			width: 100px;
+			background-color: lightgreen;
+			padding: 4px;
+			margin-left: 694;
+		}
 	
+		#gameLost{
+			width: 100px;
+			background-color: lightcoral;
+			padding: 4px;
+			margin-left: 694;
+		}
+	
+		#gameRoot{
+			text-align: center;
+		}
+	
+		.question{
+			border: 2px solid black;
+			background-color: lightgrey;
+			margin: auto;	
+			width: 798px;
+			text-align: left;
+		}
+	
+		.styleQuestion{
+			align-content: center;
+			font-weight: bolder;
+			font-size: larger;
+		}
+	
+		.nmsImage {
+			width: 256;
+			height: 256;
+			margin: 5px;
+		}
+	
+		.name::before{
+			content: 'Nom: '
+		}
+	
+	
+		.role::before{
+			content: 'Rôle: '
+		}
+	
+		.choix{
+			border: 2px solid black;
+			background-color: darkgrey;
+			margin: 2px;
+			padding: 2px;
+		}
+	
+	</style>
 </head>
 
 <body>
-	<h1>
-		<div id="gameRoot">BEFORE</div>
-	</h1>
-
+	<div id="game">
+		<div><div id="gameRoot" /></div>
+		<div><div id="gameWon" /></div>
+		<div><div id="gameLost" /></div>
+	</div>
 
 	<form method="post" action="./nmediens" id="c2" style="visibility: hidden;">
 		<div id="c3">
@@ -2800,31 +2861,16 @@
 	</form>
 </body>
 
-<style>
-	.question{
-		border: 2px solid black;
-		background-color: lightgrey;
-		margin: 25px;
-	}
 
-	.nmsImage {
-		width: 256;
-		height: 256;
-	}
-
-	.name::before{
-		content: 'Nom: '
-	}
-
-
-	.role::before{
-		content: 'Rôle: '
-	}
-
-</style>
 
 
 <script>
+	var nmediens = [];
+	var nmedienIndex = 0;
+	var ptsTrue = 0;
+	var ptsFalse = 0;
+
+	
 	// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 	function shuffleArray(array) {
 		for (let i = array.length - 1; i > 0; i--) {
@@ -2834,38 +2880,23 @@
 	}
 
 	function guessed(correct){
-		alert(correct);
-		// if(correct)
-		// 	alert('Bravo !');
-		// else
-		// 	alert('Perdu');
-	}
-
-	var content = '';
-	var elem = document.querySelectorAll('#c3_c49_c64 > div > a > span > span');
-	var imgs = document.querySelectorAll('#c3_c49_c64 > div > a > span > img');
-	
-	document.querySelector('#gameRoot').innerHTML = '';
-
-	var nmediens = [];
-
-	
-
-	for(var i = 0; i < imgs.length; i++)	{
-		let nmedien = 		{
-
-			name: elem[i*2].innerHTML,
-			role: elem[i*2+1].innerHTML,
-			image: imgs[i].getAttribute('src')
+		if(correct){
+			ptsTrue++;
+		}
+		else{
+			ptsFalse++;
 		}
 
-		nmediens.push(nmedien);
+		nmedienIndex = nmedienIndex + 1 % nmediens.length;
+		showCurrentNmedien();
 	}
 
-	shuffleArray(nmediens);
+	function showCurrentNmedien(){
+		var i = nmedienIndex;
+		var x = nmediens[nmedienIndex];
 
+		var content = '';
 
-	nmediens.forEach(x => 	{
 		switch(Math.floor(Math.random() * 3))	{
 			case 0:
 				// clone l'array sans la propriété joué du Nmédiens dedans
@@ -2875,7 +2906,7 @@
 				randomNmediens.push(x);
 				shuffleArray(randomNmediens);
 
-				content += '<div class\'styleQuestion\'>Jouons les images</div>';
+				content += '<div class=\'styleQuestion\'>Jouons les images</div>';
 				content += '<div class=\'question\'>';
 				for(var i = 0; i < 3; i++){
 					content += '<img class=\'nmsImage\' src=\'http://www.nmedia.ca' + randomNmediens[i].image + '\' onclick=\'guessed(' + (randomNmediens[i].image == x.image).toString() + ')\' />';
@@ -2893,11 +2924,11 @@
 				randomNmediens.push(x);
 				shuffleArray(randomNmediens);
 
-				content += '<div class\'styleQuestion\'>Jouons les noms</div>';
+				content += '<div class=\'styleQuestion\'>Jouons les noms</div>';
 				content += '<div class=\'question\'>';
 				content += '<img class=\'nmsImage\' src=\'http://www.nmedia.ca' + x.image + '\' />';
 				for(var i = 0; i < 3; i++){
-					content += '<div class=\'name\' onclick=\'guessed(' + (randomNmediens[i].name == x.name).toString() + ')\'>' + randomNmediens[i].name + '</div>';
+					content += '<div class=\'name choix\' onclick=\'guessed(' + (randomNmediens[i].name == x.name).toString() + ')\'>' + randomNmediens[i].name + '</div>';
 				}
 				content += '<div class=\'role\'>' + x.role + '</div>';
 				content += '</div>';
@@ -2911,20 +2942,40 @@
 				randomNmediens.push(x);
 				shuffleArray(randomNmediens);
 
-				content += '<div class\'styleQuestion\'>Jouons les rôles</div>';
+				content += '<div class=\'styleQuestion\'>Jouons les rôles</div>';
 				content += '<div class=\'question\'>';
 				content += '<img class=\'nmsImage\' src=\'http://www.nmedia.ca' + x.image + '\' />';
 				content += '<div class=\'name\'>' + x.name + '</div>';
 				for(var i = 0; i < 3; i++){
-					content += '<div class=\'role\' onclick=\'guessed(' + (randomNmediens[i].role == x.role).toString() + ')\'>' + randomNmediens[i].role + '</div>';
+					content += '<div class=\'role choix\' onclick=\'guessed(' + (randomNmediens[i].role == x.role).toString() + ')\'>' + randomNmediens[i].role + '</div>';
 				}
 				content += '</div>';
 			break;
 		}
 
-	});
+		document.querySelector('#gameWon').innerHTML = 'Gagné: ' + ptsTrue;
+		document.querySelector('#gameLost').innerHTML = 'Perdu: ' + ptsFalse;
+		document.querySelector('#gameRoot').innerHTML = content;
+	}
 
-	document.querySelector('#gameRoot').innerHTML = content;
+	var elem = document.querySelectorAll('#c3_c49_c64 > div > a > span > span');
+	var imgs = document.querySelectorAll('#c3_c49_c64 > div > a > span > img');
+	
+	document.querySelector('#gameRoot').innerHTML = '';
+
+	for(var i = 0; i < imgs.length; i++)	{
+		let nmedien ={
+			name: elem[i*2].innerHTML,
+			role: elem[i*2+1].innerHTML,
+			image: imgs[i].getAttribute('src')
+		}
+
+		nmediens.push(nmedien);
+	}
+
+	shuffleArray(nmediens);
+
+	showCurrentNmedien();	
 </script>
 
 </html>
