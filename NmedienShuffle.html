@@ -2886,20 +2886,38 @@
 			break;
 
 			case 1:
+				// clone l'array sans la propriété joué du Nmédiens dedans
+				var randomNmediens = [...nmediens].filter(y => y.name != x.name);
+				shuffleArray(randomNmediens);
+				randomNmediens = randomNmediens.slice(0,2);
+				randomNmediens.push(x);
+				shuffleArray(randomNmediens);
+
 				content += '<div class\'styleQuestion\'>Jouons les noms</div>';
 				content += '<div class=\'question\'>';
 				content += '<img class=\'nmsImage\' src=\'http://www.nmedia.ca' + x.image + '\' />';
-				content += '<div class=\'name\'>' + x.name + '</div>';
+				for(var i = 0; i < 3; i++){
+					content += '<div class=\'name\' onclick=\'guessed(' + (randomNmediens[i].name == x.name).toString() + ')\'>' + randomNmediens[i].name + '</div>';
+				}
 				content += '<div class=\'role\'>' + x.role + '</div>';
 				content += '</div>';
 			break;
 
 			case 2:
+				// clone l'array sans la propriété joué du Nmédiens dedans
+				var randomNmediens = [...nmediens].filter(y => y.role != x.role);
+				shuffleArray(randomNmediens);
+				randomNmediens = randomNmediens.slice(0,2);
+				randomNmediens.push(x);
+				shuffleArray(randomNmediens);
+
 				content += '<div class\'styleQuestion\'>Jouons les rôles</div>';
 				content += '<div class=\'question\'>';
 				content += '<img class=\'nmsImage\' src=\'http://www.nmedia.ca' + x.image + '\' />';
 				content += '<div class=\'name\'>' + x.name + '</div>';
-				content += '<div class=\'role\'>' + x.role + '</div>';
+				for(var i = 0; i < 3; i++){
+					content += '<div class=\'role\' onclick=\'guessed(' + (randomNmediens[i].role == x.role).toString() + ')\'>' + randomNmediens[i].role + '</div>';
+				}
 				content += '</div>';
 			break;
 		}
