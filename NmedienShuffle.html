@@ -2807,18 +2807,16 @@
 	
 	document.querySelector('#gameRoot').innerHTML = '';
 
-	for(var i = 0; i < elem.length; i++)
+	var nmediens = [];
+
+	for(var i = 0; i < imgs.length; i++)
 	{
-		if(i%2==0)
-		{
-			content += '<img src=\'http://www.nmedia.ca' + imgs[i/2].getAttribute('src') + '\'/><br/>';
-		}
-		content += elem[i].innerHTML + '<br/>';
-		if(i%2==1)
-		{
-			content += '<br/><br/>';
-		}
+		content += '<img src=\'http://www.nmedia.ca' + imgs[i].getAttribute('src') + '\'/><br/>';
+ 		content += elem[i*2].innerHTML + '<br/>';
+		content += elem[i*2+1].innerHTML + '<br/>';
+		content += '<br/><br/>';		
 	}
+
 	document.querySelector('#gameRoot').innerHTML = content;
 </script>
 
