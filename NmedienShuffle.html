@@ -7,18 +7,42 @@
 			margin: auto;
 		}
 
+		#score {
+			width: 802px;
+			height: 48px;
+		}
+
+		#gameAnswerPrompt{
+			width:592px;
+			height: 40px;
+			background-color: lightgray;
+			padding: 4px;
+			float:left;
+			display: -webkit-flex;
+  			display: flex;
+  			align-items: center;
+		}
+
 		#gameWon{
-			width: 100px;
+			width: 92px;
+			height: 40px;
 			background-color: lightgreen;
 			padding: 4px;
-			margin-left: 694;
+			float:left;
+			display: -webkit-flex;
+  			display: flex;
+			align-items: center;
 		}
 	
 		#gameLost{
-			width: 100px;
+			width: 94px;
+			height: 40px;
 			background-color: lightcoral;
 			padding: 4px;
-			margin-left: 694;
+			float:left;
+			display: -webkit-flex;
+  			display: flex;
+			align-items: center;
 		}
 	
 		#gameRoot{
@@ -75,16 +99,29 @@
 
 		#gameAnswer{
 			background-color: #2A2C28;
+			color: white;
+			padding: 4px;
+			width: 794px;
 		}
 	
+		.imageProfilAnswer{
+			width:100px;
+			height:100px;
+			float:left;
+			margin: 4px 12px 0px 4px;
+		}
+
 	</style>
 </head>
 
 <body>
 	<div id="game">
 		<div><div id="gameRoot" /></div>
-		<div><div id="gameWon" /></div>
-		<div><div id="gameLost" /></div>
+		<div id="score">
+			<div><div id="gameAnswerPrompt"></div></div>
+			<div><div id="gameWon" /></div>
+			<div><div id="gameLost" /></div>
+		</div>
 		<div><div id="gameAnswer" /></div>
 	</div>
 
@@ -2915,18 +2952,28 @@
 	}
 
 	async function guessed(correct){
+		var victoryMessage = '';
+		
 		if(correct){
 			ptsTrue++;
+			victoryMessage = "Bravo, tu l'as eu !";
 		}
 		else{
 			ptsFalse++;
+			victoryMessage = "On ne l'a pas eu cette fois... la prochaine c'est la bonne...";
 		}
 		
+		document.querySelector('#gameAnswerPrompt').innerHTML = victoryMessage;
+
 		var webpage = nmediens[nmedienIndex].webpage;
 
 		const userAction = async () => {
 			const response = await fetch(webpage);
-			const text = await response.text(); 
+			let text = await response.text(); 
+			let start = text.search('<h1');
+			text = text.substring(start, text.length - start);
+			text = text.substring(0, text.search('</div><a'));
+			text = '<img class=\'imageProfilAnswer\' src=\'http://www.nmedia.ca' + nmediens[nmedienIndex].image + '\' />' + text;
 			document.querySelector('#gameAnswer').innerHTML = text;
 		};
 
