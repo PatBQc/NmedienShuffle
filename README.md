@@ -1,6 +1,8 @@
 # NmedienShuffle
 Petit jeu développé pour apprendre à se connaître chez Nmédia !
 
+Pour jouer --> https://patbqc.github.io/NmedienShuffle/NmedienShuffle.html
+
 On accepte les Pull Request 🤘
 
 Idées suggérés à ce jour
