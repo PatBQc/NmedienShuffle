@@ -2809,13 +2809,28 @@
 
 	var nmediens = [];
 
+	
+
 	for(var i = 0; i < imgs.length; i++)
 	{
-		content += '<img src=\'http://www.nmedia.ca' + imgs[i].getAttribute('src') + '\'/><br/>';
- 		content += elem[i*2].innerHTML + '<br/>';
-		content += elem[i*2+1].innerHTML + '<br/>';
-		content += '<br/><br/>';		
+		let nmedien = 
+		{
+
+			name: elem[i*2].innerHTML,
+			role: elem[i*2+1].innerHTML,
+			image: imgs[i].getAttribute('src')
+		}
+
+		nmediens.push(nmedien);
 	}
+
+	nmediens.forEach(x => 
+	{
+		content += '<img src=\'http://www.nmedia.ca' + x.image + '\' width=\'256\' height = \'256\'/><br/>';
+ 		content += x.name + '<br/>';
+		content += x.role + '<br/>';
+		content += '<br/><br/>';
+	});
 
 	document.querySelector('#gameRoot').innerHTML = content;
 </script>
