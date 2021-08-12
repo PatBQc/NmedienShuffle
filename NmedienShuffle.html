@@ -2833,6 +2833,14 @@
 		}
 	}
 
+	function guessed(correct){
+		alert(correct);
+		// if(correct)
+		// 	alert('Bravo !');
+		// else
+		// 	alert('Perdu');
+	}
+
 	var content = '';
 	var elem = document.querySelectorAll('#c3_c49_c64 > div > a > span > span');
 	var imgs = document.querySelectorAll('#c3_c49_c64 > div > a > span > img');
@@ -2843,10 +2851,8 @@
 
 	
 
-	for(var i = 0; i < imgs.length; i++)
-	{
-		let nmedien = 
-		{
+	for(var i = 0; i < imgs.length; i++)	{
+		let nmedien = 		{
 
 			name: elem[i*2].innerHTML,
 			role: elem[i*2+1].innerHTML,
@@ -2858,13 +2864,46 @@
 
 	shuffleArray(nmediens);
 
-	nmediens.forEach(x => 
-	{
-		content += '<div class=\'question\'>';
-		content += '<img class=\'nmsImage\' src=\'http://www.nmedia.ca' + x.image + '\' />';
- 		content += '<div class=\'name\'>' + x.name + '</div>';
-		content += '<div class=\'role\'>' + x.role + '</div>';
-		content += '</div>';
+
+	nmediens.forEach(x => 	{
+		switch(Math.floor(Math.random() * 3))	{
+			case 0:
+				// clone l'array sans la propriété joué du Nmédiens dedans
+				var randomNmediens = [...nmediens].filter(y => y.image != x.image);
+				shuffleArray(randomNmediens);
+				randomNmediens = randomNmediens.slice(0,2);
+				randomNmediens.push(x);
+				shuffleArray(randomNmediens);
+
+				content += '<div class\'styleQuestion\'>Jouons les images</div>';
+				content += '<div class=\'question\'>';
+				for(var i = 0; i < 3; i++){
+					content += '<img class=\'nmsImage\' src=\'http://www.nmedia.ca' + randomNmediens[i].image + '\' onclick=\'guessed(' + (randomNmediens[i].image == x.image).toString() + ')\' />';
+				}
+				content += '<div class=\'name\'>' + x.name + '</div>';
+				content += '<div class=\'role\'>' + x.role + '</div>';
+				content += '</div>';
+			break;
+
+			case 1:
+				content += '<div class\'styleQuestion\'>Jouons les noms</div>';
+				content += '<div class=\'question\'>';
+				content += '<img class=\'nmsImage\' src=\'http://www.nmedia.ca' + x.image + '\' />';
+				content += '<div class=\'name\'>' + x.name + '</div>';
+				content += '<div class=\'role\'>' + x.role + '</div>';
+				content += '</div>';
+			break;
+
+			case 2:
+				content += '<div class\'styleQuestion\'>Jouons les rôles</div>';
+				content += '<div class=\'question\'>';
+				content += '<img class=\'nmsImage\' src=\'http://www.nmedia.ca' + x.image + '\' />';
+				content += '<div class=\'name\'>' + x.name + '</div>';
+				content += '<div class=\'role\'>' + x.role + '</div>';
+				content += '</div>';
+			break;
+		}
+
 	});
 
 	document.querySelector('#gameRoot').innerHTML = content;
