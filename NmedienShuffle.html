@@ -12,6 +12,11 @@
 			height: 48px;
 		}
 
+		#gameSpacer{
+			height:12px;
+			width:802px;
+		}
+
 		#gameAnswerPrompt{
 			width:592px;
 			height: 40px;
@@ -32,6 +37,7 @@
 			display: -webkit-flex;
   			display: flex;
 			align-items: center;
+			justify-content: center;
 		}
 	
 		#gameLost{
@@ -43,6 +49,7 @@
 			display: -webkit-flex;
   			display: flex;
 			align-items: center;
+			justify-content: center;
 		}
 	
 		#gameRoot{
@@ -117,6 +124,7 @@
 <body>
 	<div id="game">
 		<div><div id="gameRoot" /></div>
+		<div id="gameSpacer"></div>
 		<div id="score">
 			<div><div id="gameAnswerPrompt"></div></div>
 			<div><div id="gameWon" /></div>
@@ -2983,6 +2991,30 @@
 		showCurrentNmedien();
 	}
 
+
+	function byImage(x){
+		return x.image;
+	}
+
+	function byName(x){
+		return x.image;
+	}
+
+	function byRole(x){
+		return x.image;
+	}
+
+	function shuffleAnswers(filter, goodAnswer){
+		// clone l'array sans la propriété joué du Nmédiens dedans
+		var randomNmediens = [...nmediens].filter(y => filter(y) != filter(goodAnswer));
+		shuffleArray(randomNmediens);
+		randomNmediens = randomNmediens.slice(0,2);
+		randomNmediens.push(goodAnswer);
+		shuffleArray(randomNmediens);
+
+		return randomNmediens;
+	}
+
 	function showCurrentNmedien(){
 		var i = nmedienIndex;
 		var x = nmediens[nmedienIndex];
@@ -2991,12 +3023,7 @@
 
 		switch(Math.floor(Math.random() * 3))	{
 			case 0:
-				// clone l'array sans la propriété joué du Nmédiens dedans
-				var randomNmediens = [...nmediens].filter(y => y.image != x.image);
-				shuffleArray(randomNmediens);
-				randomNmediens = randomNmediens.slice(0,2);
-				randomNmediens.push(x);
-				shuffleArray(randomNmediens);
+				var randomNmediens = shuffleAnswers(byImage, x);
 
 				content += '<div class=\'styleQuestion\'>Quel est ton portrait ?</div>';
 				content += '<div class=\'question\'>';
@@ -3009,12 +3036,7 @@
 			break;
 
 			case 1:
-				// clone l'array sans la propriété joué du Nmédiens dedans
-				var randomNmediens = [...nmediens].filter(y => y.name != x.name);
-				shuffleArray(randomNmediens);
-				randomNmediens = randomNmediens.slice(0,2);
-				randomNmediens.push(x);
-				shuffleArray(randomNmediens);
+				var randomNmediens = shuffleAnswers(byName, x);
 
 				content += '<div class=\'styleQuestion\'>Comment t\'appeles-tu ?</div>';
 				content += '<div class=\'question\'>';
@@ -3027,12 +3049,7 @@
 			break;
 
 			case 2:
-				// clone l'array sans la propriété joué du Nmédiens dedans
-				var randomNmediens = [...nmediens].filter(y => y.role != x.role);
-				shuffleArray(randomNmediens);
-				randomNmediens = randomNmediens.slice(0,2);
-				randomNmediens.push(x);
-				shuffleArray(randomNmediens);
+				var randomNmediens = shuffleAnswers(byRole, x);
 
 				content += '<div class=\'styleQuestion\'>Quel est ton rôle ?</div>';
 				content += '<div class=\'question\'>';
