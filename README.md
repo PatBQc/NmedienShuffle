@@ -10,3 +10,4 @@ Idées suggérés à ce jour
 * Supporter le mobile / expérience responsives
 * Mettre un beau petit nom de domaine
 * Répondre sur index.htm ou quelque chose du genre pour répondre correctement sur le lien sans le fichier html dedans
+* Mettre un Google Analytics
