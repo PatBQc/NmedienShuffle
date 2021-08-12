@@ -44,11 +44,24 @@
 			height: 256;
 			margin: 5px;
 		}
+
+		.choixImage{
+			cursor: pointer;
+		}
+
+		.name{
+			margin: 2px;
+			padding: 2px;
+		}
 	
 		.name::before{
 			content: 'Nom: '
 		}
-	
+
+		.role{
+			margin: 2px;
+			padding: 2px;
+		}
 	
 		.role::before{
 			content: 'Rôle: '
@@ -57,8 +70,7 @@
 		.choix{
 			border: 2px solid black;
 			background-color: darkgrey;
-			margin: 2px;
-			padding: 2px;
+			cursor: pointer;
 		}
 	
 	</style>
@@ -2906,10 +2918,10 @@
 				randomNmediens.push(x);
 				shuffleArray(randomNmediens);
 
-				content += '<div class=\'styleQuestion\'>Jouons les images</div>';
+				content += '<div class=\'styleQuestion\'>Quel est ton portrait ?</div>';
 				content += '<div class=\'question\'>';
 				for(var i = 0; i < 3; i++){
-					content += '<img class=\'nmsImage\' src=\'http://www.nmedia.ca' + randomNmediens[i].image + '\' onclick=\'guessed(' + (randomNmediens[i].image == x.image).toString() + ')\' />';
+					content += '<img class=\'nmsImage choixImage\' src=\'http://www.nmedia.ca' + randomNmediens[i].image + '\' onclick=\'guessed(' + (randomNmediens[i].image == x.image).toString() + ')\' />';
 				}
 				content += '<div class=\'name\'>' + x.name + '</div>';
 				content += '<div class=\'role\'>' + x.role + '</div>';
@@ -2924,7 +2936,7 @@
 				randomNmediens.push(x);
 				shuffleArray(randomNmediens);
 
-				content += '<div class=\'styleQuestion\'>Jouons les noms</div>';
+				content += '<div class=\'styleQuestion\'>Comment t\'appeles-tu ?</div>';
 				content += '<div class=\'question\'>';
 				content += '<img class=\'nmsImage\' src=\'http://www.nmedia.ca' + x.image + '\' />';
 				for(var i = 0; i < 3; i++){
@@ -2942,7 +2954,7 @@
 				randomNmediens.push(x);
 				shuffleArray(randomNmediens);
 
-				content += '<div class=\'styleQuestion\'>Jouons les rôles</div>';
+				content += '<div class=\'styleQuestion\'>Quel est ton rôle ?</div>';
 				content += '<div class=\'question\'>';
 				content += '<img class=\'nmsImage\' src=\'http://www.nmedia.ca' + x.image + '\' />';
 				content += '<div class=\'name\'>' + x.name + '</div>';
